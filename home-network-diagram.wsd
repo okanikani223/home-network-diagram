@@ -1,0 +1,29 @@
+@startuml home-network-diagram
+!theme crt-amber
+!include <office/Servers/application_server>
+!include <office/Servers/network>
+!include <office/Devices/router>
+!include <office/Devices/workstation_pc>
+
+nwdiag {
+    internet [shape = cloud];
+    internet -- dns;
+
+    dns -- ix2215;
+
+    network home-main {
+        width = full
+        ix2215 [address = "10.0.10.0/24" description = "<$router>\n ix2215"];
+        web01 [description = "<$application_server>\n web01"]
+        pc [description = "<$workstation_pc>\n MAIN-PC"]
+    }
+
+    network work {
+        ix2215 [address = "10.0.20.0/24"];
+    }
+
+    network home-sub {
+        ix2215 [address = "10.0.30.0/24"];
+    }
+}
+@enduml
