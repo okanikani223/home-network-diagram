@@ -1,29 +1,85 @@
 @startuml home-network-diagram
-!theme crt-amber
+!theme crt-green
+!include <office/Concepts/globe_internet>
+!include <office/Devices/ip_gateway>
+!include <office/Devices/modem>
+!include <office/Devices/workstation_pc>
+!include <office/Devices/cell_phone_android_proportional>
+!include <office/Devices/cell_phone_iphone_proportional>
+!include <office/Devices/device_tablet_ipad>
 !include <office/Servers/application_server>
+!include <office/Servers/certificate_authority>
 !include <office/Servers/network>
 !include <office/Devices/router>
-!include <office/Devices/workstation_pc>
+
+<Style>
+nwdiagDiagram {
+    arrow {
+        FontSize 12
+    }
+
+    server {
+        
+    }
+}
+</Style>
 
 nwdiag {
-    internet [shape = cloud];
-    internet -- dns;
-
-    dns -- ix2215;
+    internet [description = "<$globe_internet>\n Internet" shape = label]
+    internet -- gigaeth0
+    gigaeth0 [address = "(Global IP)" description = "<$ip_gateway>\n NEC Router\n(GigaEthernet0.0)" shape = label]
+    gigaeth0 -- gigaeth2
+    gigaeth2 [address = "(Bridge?)" description = "<$ip_gateway>\n NEC Router\n(GigaEthernet2.0)" shape = label]
 
     network home-main {
         width = full
-        ix2215 [address = "10.0.10.0/24" description = "<$router>\n ix2215"];
-        web01 [description = "<$application_server>\n web01"]
-        pc [description = "<$workstation_pc>\n MAIN-PC"]
+        address = "10.87.10.0/24"
+        gigaeth2 [address = ".1"]
+        radius [address = ".10" description = "<$certificate_authority>\n RADIUS Server" shape = label]
+        home-main-wifi-ap [address = ".20" description = "<$ip_gateway>\n Wifi AP" shape = label]
+        main-pc [address = ".xxx(DHCP)" description = "<$workstation_pc>\n MAIN PC" shape = label]
+        sub-pc [address = ".xxx(DHCP)" description = "<$workstation_pc>\n SUB PC" shape = label]
     }
 
-    network work {
-        ix2215 [address = "10.0.20.0/24"];
+    network home-main-wifi {
+        ' width = full
+        address = "10.87.10.0/24"
+        home-main-wifi-ap [address = "(AP mode)" description = "<$ip_gateway>\n Wifi AP" shape = label]
+        pixel [address = ".xxx(DHCP)" description = "<$cell_phone_android_proportional>\n Pixel" shape = label]
+        iphone [address = ".xxx(DHCP)" description = "<$cell_phone_iphone_proportional>\n iPhone" shape = label]
+        ipad [address = ".xxx(DHCP)" description = "<$device_tablet_ipad>\n iPad" shape = label]        
     }
 
     network home-sub {
-        ix2215 [address = "10.0.30.0/24"];
+        ' width = full
+        address = "10.87.20.0/24"
+        gigaeth2 [address = ".1"]
+        home-sub-wifi-ap [address = ".10" description = "<$ip_gateway>\n Wifi AP" shape = label]
+        PlayStation4 [address = ".xxx(DHCP)" description = "PlayStation 4"]
+    }
+
+    network home-sub-wifi {
+        ' width = full
+        address = "10.87.20.0/24"
+        home-sub-wifi-ap [address = "(AP mode)" description = "<$ip_gateway>\n Wifi AP" shape = label]
+        SwitchBotHub [address = ".xxx(DHCP)" description = "SwitchBotHub"]
+        GoogleNestHub [address = ".xxx(DHCP)" description = "GoogleNestHub"]
+        GoogleNestMini [address = ".xxx(DHCP)" description = "GoogleNestMini"]
+        Nintendo_Switch [address = ".xxx(DHCP)" description = "Nintendo Switch"]
+    }
+
+    network work {
+        ' width = full
+        address = "10.87.30.0/24"
+        gigaeth2 [address = ".1"]
+        work-wifi-ap [address = ".2" description = "<$ip_gateway>\n Wifi AP" shape = label]
+    }
+
+    network work-wifi {
+        ' width = full
+        address = "10.87.30.0/24"
+        work-wifi-ap [address = "(AP mode)" description = "<$ip_gateway>\n Wifi AP" shape = label]
+        work-pc [address = ".xxx(DHCP)" description = "<$workstation_pc>\n WORK PC" shape = label]
     }
 }
 @enduml
