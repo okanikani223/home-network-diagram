@@ -2,24 +2,25 @@
 !theme crt-green
 !include <office/Concepts/globe_internet>
 !include <office/Devices/ip_gateway>
-!include <office/Devices/modem>
 !include <office/Devices/workstation_pc>
 !include <office/Devices/cell_phone_android_proportional>
 !include <office/Devices/cell_phone_iphone_proportional>
 !include <office/Devices/device_tablet_ipad>
-!include <office/Servers/application_server>
-!include <office/Servers/certificate_authority>
-!include <office/Servers/network>
-!include <office/Devices/router>
+!include <office/Servers/on_premises_server>
+!include <office/Servers/virtual_server>
+!include <office/Servers/virtual_application_server>
+
+title 自宅ネットワークの構成図
 
 <Style>
 nwdiagDiagram {
-    arrow {
+    root {
         FontSize 12
     }
 
-    server {
-        
+    group {
+        BackGroundColor #364652
+        LineThickness 2.0
     }
 }
 </Style>
@@ -31,19 +32,18 @@ nwdiag {
     gigaeth0 -- gigaeth2
     gigaeth2 [address = "(Bridge?)" description = "<$ip_gateway>\n NEC Router\n(GigaEthernet2.0)" shape = label]
 
+    raspberry_pi[description = "RaspberryPi3\nどこにおく？"]
+
     network home-main {
-        width = full
+        ' width = full
         address = "10.87.10.0/24"
         gigaeth2 [address = ".1"]
-        radius [address = ".10" description = "<$certificate_authority>\n RADIUS Server" shape = label]
-        home-main-wifi-ap [address = ".20" description = "<$ip_gateway>\n Wifi AP" shape = label]
+        home-main-wifi-ap [address = ".10" description = "<$ip_gateway>\n Wifi AP" shape = label]
         main-pc [address = ".xxx(DHCP)" description = "<$workstation_pc>\n MAIN PC" shape = label]
         sub-pc [address = ".xxx(DHCP)" description = "<$workstation_pc>\n SUB PC" shape = label]
     }
 
-    network home-main-wifi {
-        ' width = full
-        address = "10.87.10.0/24"
+    network {
         home-main-wifi-ap [address = "(AP mode)" description = "<$ip_gateway>\n Wifi AP" shape = label]
         pixel [address = ".xxx(DHCP)" description = "<$cell_phone_android_proportional>\n Pixel" shape = label]
         iphone [address = ".xxx(DHCP)" description = "<$cell_phone_iphone_proportional>\n iPhone" shape = label]
@@ -58,9 +58,7 @@ nwdiag {
         PlayStation4 [address = ".xxx(DHCP)" description = "PlayStation 4"]
     }
 
-    network home-sub-wifi {
-        ' width = full
-        address = "10.87.20.0/24"
+    network {
         home-sub-wifi-ap [address = "(AP mode)" description = "<$ip_gateway>\n Wifi AP" shape = label]
         SwitchBotHub [address = ".xxx(DHCP)" description = "SwitchBotHub"]
         GoogleNestHub [address = ".xxx(DHCP)" description = "GoogleNestHub"]
@@ -72,14 +70,42 @@ nwdiag {
         ' width = full
         address = "10.87.30.0/24"
         gigaeth2 [address = ".1"]
-        work-wifi-ap [address = ".2" description = "<$ip_gateway>\n Wifi AP" shape = label]
+        work-wifi-ap [address = ".10" description = "<$ip_gateway>\n Wifi AP" shape = label]
     }
 
-    network work-wifi {
-        ' width = full
-        address = "10.87.30.0/24"
+    network {
         work-wifi-ap [address = "(AP mode)" description = "<$ip_gateway>\n Wifi AP" shape = label]
         work-pc [address = ".xxx(DHCP)" description = "<$workstation_pc>\n WORK PC" shape = label]
+    }
+
+    network network-management {
+        ' width = full
+        address = "10.89.10.0/24"
+        gigaeth2 [address = ".1"]
+        prxmox_server [address = ".10" description = "<$on_premises_server>\nProxmox VE\nServer" shape = label]
+        network_middleware_servers [address = ".20" description = "<$virtual_server>\nNetwork\nMiddleware\nServers" shape = label]
+        dns [address = ".21" description = "<$virtual_server>\nDNS" shape = label]
+        radius [address = ".22" description = "<$virtual_server>\nRADIUS\nServer" shape = label]
+        application_servers [address = ".30" description = "<$virtual_server>\nApplication\nServers" shape = label]
+        plantuml [address = ".31" description = "<$virtual_application_server>\nPlantUML" shape = label]
+    }
+
+    group proxmox {
+        description = "Proxmox"
+        prxmox_server
+        network_middleware_servers
+        application_servers
+    }
+
+    group network_middleware_servers {
+        description = "Network Middleware\nServers"
+        dns
+        radius
+    }
+
+    group application_servers {
+        description = "Application\nServers"
+        plantuml
     }
 }
 @enduml
