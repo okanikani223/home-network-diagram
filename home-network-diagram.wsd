@@ -54,7 +54,7 @@ nwdiag {
         ' width = full
         address = "10.87.20.0/24"
         gigaeth2 [address = ".1"]
-        home-sub-wifi-ap [address = ".10" description = "<$ip_gateway>\n Wifi AP" shape = label]
+        home-sub-wifi-ap [description = "<$ip_gateway>\n Wifi AP" shape = label]
         PlayStation4 [address = ".xxx(DHCP)" description = "PlayStation 4"]
     }
 
@@ -70,7 +70,7 @@ nwdiag {
         ' width = full
         address = "10.87.30.0/24"
         gigaeth2 [address = ".1"]
-        work-wifi-ap [address = ".10" description = "<$ip_gateway>\n Wifi AP" shape = label]
+        work-wifi-ap [description = "<$ip_gateway>\n Wifi AP" shape = label]
     }
 
     network {
@@ -82,12 +82,21 @@ nwdiag {
         ' width = full
         address = "10.89.10.0/24"
         gigaeth2 [address = ".1"]
-        prxmox_server [address = ".10" description = "<$on_premises_server>\nProxmox VE\nServer" shape = label]
-        network_middleware_servers [address = ".20" description = "<$virtual_server>\nNetwork\nMiddleware\nServers" shape = label]
-        dns [address = ".21" description = "<$virtual_server>\nDNS" shape = label]
-        radius [address = ".22" description = "<$virtual_server>\nRADIUS\nServer" shape = label]
-        application_servers [address = ".30" description = "<$virtual_server>\nApplication\nServers" shape = label]
-        plantuml [address = ".31" description = "<$virtual_application_server>\nPlantUML" shape = label]
+        network-management-ap [address = ".10" description = "<$ip_gateway>\n Wifi AP" shape = label]
+        prxmox_server [address = ".20" description = "<$on_premises_server>\nProxmox VE\nServer" shape = label]
+        network_middleware_servers [address = ".30" description = "<$virtual_server>\nNetwork\nMiddleware\nServers" shape = label]
+        dhcp [address = ".31" description = "<$virtual_server>\nDHCP" shape = label]
+        dns [address = ".32" description = "<$virtual_server>\nDNS" shape = label]
+        radius [address = ".33" description = "<$virtual_server>\nRADIUS\nServer" shape = label]
+        application_servers [address = ".40" description = "<$virtual_server>\nApplication\nServers" shape = label]
+        plantuml [address = ".41" description = "<$virtual_application_server>\nPlantUML" shape = label]
+    }
+
+    group cisco_meraki{
+        description = "Cisco Meraki"
+        network-management-ap
+        work-wifi-ap
+        home-sub-wifi-ap
     }
 
     group proxmox {
@@ -99,6 +108,7 @@ nwdiag {
 
     group network_middleware_servers {
         description = "Network Middleware\nServers"
+        dhcp
         dns
         radius
     }
