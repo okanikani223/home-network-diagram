@@ -10,7 +10,7 @@
 !include <office/Servers/virtual_server>
 !include <office/Servers/virtual_application_server>
 
-title 自宅ネットワークの構成図
+title 自宅ネットワークの構成図(IPv4)
 
 <Style>
 nwdiagDiagram {
@@ -38,7 +38,7 @@ nwdiag {
         ' width = full
         address = "10.87.10.0/24"
         gigaeth2 [address = ".1"]
-        home-main-wifi-ap [address = ".10" description = "<$ip_gateway>\n Wifi AP" shape = label]
+        home-main-wifi-ap [description = "<$ip_gateway>\n Wifi AP" shape = label]
         main-pc [address = ".xxx(DHCP)" description = "<$workstation_pc>\n MAIN PC" shape = label]
         sub-pc [address = ".xxx(DHCP)" description = "<$workstation_pc>\n SUB PC" shape = label]
     }
@@ -97,6 +97,7 @@ nwdiag {
         network-management-ap
         work-wifi-ap
         home-sub-wifi-ap
+        home-main-wifi-ap
     }
 
     group proxmox {
