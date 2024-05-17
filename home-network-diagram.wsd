@@ -87,7 +87,7 @@ nwdiag {
         network_middleware_servers [address = ".30" description = "<$virtual_server>\nNetwork\nMiddleware\nServers" shape = label]
         dhcp [address = ".31" description = "<$virtual_server>\nDHCP" shape = label]
         dns [address = ".32" description = "<$virtual_server>\nDNS" shape = label]
-        radius [address = ".33" description = "<$virtual_server>\nRADIUS\nServer" shape = label]
+        radius [address = ".33" description = "<$virtual_server>\nReverse\nProxy\nServer" shape = label]
         application_servers [address = ".40" description = "<$virtual_server>\nApplication\nServers" shape = label]
         plantuml [address = ".41" description = "<$virtual_application_server>\nPlantUML" shape = label]
     }
